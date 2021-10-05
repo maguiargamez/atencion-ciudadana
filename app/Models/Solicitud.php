@@ -41,6 +41,14 @@ class Solicitud extends Model
                 $sql->whereIn('t_solicitudes.id_status', $filtro);
             });
         }
+
+        if(array_key_exists('id_tipo_servicio', $array)){
+            $filtro= $array["id_tipo_servicio"];
+            $query= $query->where( function($sql) use ($filtro){
+                $sql->where('t_solicitudes.id_tipo_servicio', $filtro);
+            });
+        }
+
         if(array_key_exists('nombre', $array)){
             $filtro= $array["nombre"];
             $query= $query->where( function($sql) use ($filtro){

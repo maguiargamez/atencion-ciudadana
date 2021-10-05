@@ -13,8 +13,8 @@
 
 @endsection
 
-
 @section('content')
+
     <!-- home-map-->
     <div class="home-map fl-wrap">
         <!-- Map -->
@@ -26,18 +26,11 @@
         <div class="absolute-main-search-input">
             <div class="container">
                 <div class="main-search-input fl-wrap">
-
                     <div class="main-search-input-item">
-                        <select data-placeholder="All Categories" class="chosen-select" >
-                            <option>All Categories</option>
-                            <option>Shops</option>
-                            <option>Hotels</option>
-                            <option>Restaurants</option>
-                            <option>Fitness</option>
-                            <option>Events</option>
-                        </select>
+                        {!! Form::select('id_tipo_servicio', $tipos_servicios, null, ['id' => 'id_tipo_servicio', 'style' =>
+                            'width: 100%;', 'class' => 'chosen-select', 'data-placeholder'=>'Servicio']) !!}
                     </div>
-                    <button class="main-search-button" onclick="reload_map()">Buscar</button>
+                    <button class="main-search-button" onclick="reload_map()">Filtrar</button>
                 </div>
             </div>
         </div>

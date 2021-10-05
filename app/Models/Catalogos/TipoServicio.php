@@ -17,7 +17,7 @@ class TipoServicio extends Model
 
     public static function comboActivos($array=[]){
         $query= TipoServicio::select('id', 'nombre', 'deleted_at')->where('activo',1);
-        $query= $query->orderBy('nombre','ASC')->pluck('nombre','id')->prepend('--Cargo--', 0)->all();
+        $query= $query->orderBy('nombre','ASC')->pluck('nombre','id')->prepend('--Servicio--', 0)->all();
         return $query;
     }
 

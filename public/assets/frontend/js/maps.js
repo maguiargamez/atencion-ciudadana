@@ -7,7 +7,7 @@
     function mainMap(locations) {
 
         //console.log(locations);
-        console.log(locations.length);
+        //console.log(locations.length);
         var mapZoomAttr = $('#map-main').attr('data-map-zoom');
         var mapScrollAttr = $('#map-main').attr('data-map-scroll');
         if (typeof mapZoomAttr !== typeof undefined && mapZoomAttr !== false) {
@@ -122,7 +122,7 @@
                 map.setZoom(map.getZoom() - 1);
             });
         }
-        console.log(locations.length);
+        //console.log(locations.length);
         for (i = 0; i < locations.length; i++) {
             marker = new google.maps.Marker({
                 animation: google.maps.Animation.DROP,
@@ -132,7 +132,7 @@
                 id: i
             });
             allMarkers.push(marker);
-            console.log(allMarkers);
+            //console.log(allMarkers);
             var ib = new InfoBox();
             google.maps.event.addListener(ib, 'domready', function () {
                 cardRaining();
@@ -174,25 +174,20 @@
     }
 
     var locations = [];
-    function getLocations(){
+
+    function getLocations(data=[]){
         let url =  "http://atencion-ciudadana.test/solicitudes/get-all-frontend";
         let solicitudes= [];
-        var ajaxResult=[];
         $.ajax({
             type: 'GET',
             url: url,
-            data: [],
+            data: data,
             async: !1,
             dataType: 'json',
             success: function (data) {
-
                 $.each(data, function (i, valor) {
-
-                    solicitudes.push([ locationData(valor.folio, 'images/all/1.jpg', valor.tipo_serivicio, valor.descripcion_reporte), valor.latitud, valor.longitud ,i,markerIcon ]);
-
-                 });
-
-                 //console.log(solicitudes.length);
+                    solicitudes.push([ locationData(valor.folio, 'images/all/1.jpg', valor.tipo_servicio, valor.descripcion_reporte), valor.latitud, valor.longitud ,i,markerIcon ]);
+                });
             },
             error: function (data) {
                 let jsonString = data.responseJSON;
@@ -204,14 +199,15 @@
                 }
             }
         });
-        //console.log(solicitudes.length);
         return solicitudes;
-        //console.log(locations);
     }
 
 
 
     function reload_map(){
+        let id_tipo_servicio= $("#id_tipo_servicio").val();
+        // alert(id_tipo_servicio);
+        mainMap(getLocations({'id_tipo_servicio' : id_tipo_servicio}));
         /*var locations = [
             [locationData('listing-single2.html', 'Hotels', 'images/all/1.jpg', 'Luxary Hotel-Spa', "1327 Intervale Ave, Bronx, NY ", "+38099231212", "5", "27"), 40.72956781, -73.99726866, 1, markerIcon],
             [locationData('listing-single.html', 'Food and Drink', 'images/all/1.jpg', 'Luxary Restaurant', "W 85th St, New York, NY ", "+38099231212", "4", "5"), 40.76221766, -73.96511769, 2, markerIcon],
@@ -227,8 +223,6 @@
     if (typeof (map) != 'undefined' && map != null) {
         google.maps.event.addDomListener(window, 'load', mainMap(getLocations()));
     }
-
-
 
 
 
@@ -284,6 +278,7 @@
             });
         }
     }
+
     var single_map = document.getElementById('singleMap');
     if (typeof (single_map) != 'undefined' && single_map != null) {
         google.maps.event.addDomListener(window, 'load', singleMap);

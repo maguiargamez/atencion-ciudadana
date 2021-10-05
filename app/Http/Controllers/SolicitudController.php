@@ -27,13 +27,24 @@ class SolicitudController extends Controller
         view()->share('current_route', $this->route);
     }
 
-    public function getAllFrontend()
+    public function getAllFrontend(Request $request)
     {
-        $result= Solicitud::buscarTodos(['isFolio'=>1])->get();
+        $post = $request->all();
+        $data= ['isFolio'=>1];
+        if(isset($post['id_tipo_servicio'])){
+            if($post['id_tipo_servicio']!=0){
+            $data= ['isFolio'=>1, 'id_tipo_servicio'=>$post['id_tipo_servicio']];
+            }
+        }
+        $result= Solicitud::buscarTodos($data)->get();
         return $result;
     }
 
-
+    public function showFrontend($id)
+    {
+        $datos= Solicitud::edit($id)->get();
+        return view('detalle', []);
+    }
 
 
 }

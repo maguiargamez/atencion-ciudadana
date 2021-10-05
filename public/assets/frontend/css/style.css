@@ -926,7 +926,8 @@ section.gray-section .section-separator {
 }
 .main-search-input-item {
 	float:left;
-	width:33.3%;
+	/* width:33.3%; */
+    width:100%;
 	box-sizing:border-box;
 	border-right:1px solid #eee;
 	height:50px;
@@ -954,7 +955,7 @@ section.gray-section .section-separator {
 	border-bottom-right-radius:30px;
 	cursor:pointer;
 }
- 
+
 .main-search-input-item  .nice-select {
 	color:#292929;
 	float:left;
@@ -971,7 +972,7 @@ section.gray-section .section-separator {
     background: #fff;
     border-radius: 4px;
 	max-height: 180px;
-	
+
 }
 .main-search-input-item  .nice-select .list li{
 	float:left;
@@ -3147,7 +3148,7 @@ article .list-single-main-item {
 	width:100%;
 	position:relative;
 }
- 
+
 .custom-form .nice-select {
 	color:#fff;
 	border-radius:4px;
@@ -3159,7 +3160,7 @@ article .list-single-main-item {
 	width:100%;
 	padding: 80px 12px 10px;
     background: #fff;
- 
+
     border-radius: 4px;
 }
 .custom-form .nice-select .list li{
