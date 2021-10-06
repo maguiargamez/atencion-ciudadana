@@ -13,6 +13,6 @@ class SolicitudSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Solicitud::factory(100)->create();
+        \App\Models\Solicitud::factory(150)->create();
     }
 }

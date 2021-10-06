@@ -42,8 +42,23 @@ class SolicitudController extends Controller
 
     public function showFrontend($id)
     {
-        $datos= Solicitud::edit($id)->get();
-        return view('detalle', []);
+        $datos= Solicitud::find($id);
+        $denuncias= Solicitud::buscarTodos([])->limit(5)->get();
+        $status= \App\Models\Catalogos\Status::find($datos->id_status);
+        $servicio= \App\Models\Catalogos\TipoServicio::find($datos->id_tipo_servicio);
+        $datos['status']= $status->nombre;
+        $datos['servicio']= $servicio->nombre;
+        $datos['adjuntos']= json_decode($datos['adjuntos']);
+        //dd($datos['adjuntos']);
+        return view('frontend.show', compact('datos', 'denuncias'));
+    }
+
+    public function createFrontend()
+    {
+
+        $servicios= \App\Models\Catalogos\TipoServicio::comboActivos();
+        //dd($datos['adjuntos']);
+        return view('frontend.create', compact('servicios'));
     }
 
 

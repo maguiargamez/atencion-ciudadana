@@ -57,6 +57,7 @@ class SolicitudFactory extends Factory
             'latitud'=> $this->faker->randomFloat(6,16.773548,16.733870),
             'longitud'=> $this->faker->randomFloat(6,-93.182607,-93.079041),
             'descripcion_reporte'=> $this->faker->sentence(20),
+            'adjuntos'=> '["adj1.jpg", "adj2.jpg", "adj3.jpg"]',
             'codigo_rastreo'=> $codigo_rastreo,
         ];
     }

@@ -27,10 +27,13 @@ class Solicitud extends Model
             't_solicitudes.descripcion_reporte',
             't_solicitudes.latitud',
             't_solicitudes.longitud',
-            'ts.nombre as tipo_servicio'
+            'ts.nombre as tipo_servicio',
+            't_solicitudes.adjuntos',
+            'stat.nombre as status'
         );
 
         $query= $query->join('c_tipos_servicios as ts', 'ts.id', '=', 't_solicitudes.id_tipo_servicio');
+        $query= $query->join('c_status as stat', 'stat.id', '=', 't_solicitudes.id_status');
 
         if(array_key_exists('isFolio', $array)){
             $query= $query->whereNotNull('t_solicitudes.folio');

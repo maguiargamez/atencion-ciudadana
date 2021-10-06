@@ -10,7 +10,6 @@
 
 @section('script')
 
-
 @endsection
 
 @section('content')

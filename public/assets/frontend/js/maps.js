@@ -2,7 +2,7 @@
     "use strict";
     var markerIcon = {
         anchor: new google.maps.Point(22, 16),
-        url: 'assets/frontend/images/marker.png',
+        url: '/assets/frontend/images/marker.png',
     }
     function mainMap(locations) {
 
@@ -169,8 +169,8 @@
     }
 
 
-    function locationData(folio, img, tipoServicio, descripcion) {
-        return ('<div class="map-popup-wrap"><div class="map-popup"><div class="infoBox-close"><i class="fa fa-times"></i></div><div class="map-popup-category">' + tipoServicio + '</div><a href="" class="listing-img-content fl-wrap"><img src="' + img + '" alt=""></a> <div class="listing-content fl-wrap"><div class="card-popup-raining map-card-rainting" data-staRrating="2"><span class="map-popup-reviews-count">( 4 reviews )</span></div><div class="listing-title fl-wrap"><h4><a href=>' + tipoServicio + '</a></h4><span class="map-popup-location-info">' + descripcion + '</span></div></div></div></div>')
+    function locationData(folio, img, tipoServicio, descripcion, url_detalle) {
+        return ('<div class="map-popup-wrap"><div class="map-popup"><div class="infoBox-close"><i class="fa fa-times"></i></div><div class="map-popup-category">' + tipoServicio + '</div><a href="" class="listing-img-content fl-wrap"><img src="' + img + '" alt=""></a> <div class="listing-content fl-wrap"><div class="card-popup-raining map-card-rainting" data-staRrating="2"><span class="map-popup-reviews-count">( 4 reviews )</span></div><div class="listing-title fl-wrap"><h4><a href="'+url_detalle+'">' + tipoServicio + '</a></h4><span class="map-popup-location-info">' + descripcion + '</span></div></div></div></div>')
     }
 
     var locations = [];
@@ -186,7 +186,9 @@
             dataType: 'json',
             success: function (data) {
                 $.each(data, function (i, valor) {
-                    solicitudes.push([ locationData(valor.folio, 'images/all/1.jpg', valor.tipo_servicio, valor.descripcion_reporte), valor.latitud, valor.longitud ,i,markerIcon ]);
+                    let url_detalle=  "http://atencion-ciudadana.test/solicitud/"+valor.id+"/detalle";
+                    solicitudes.push([ locationData(valor.folio, 'images/all/1.jpg', valor.tipo_servicio, valor.descripcion_reporte, url_detalle), valor.latitud, valor.longitud ,i,markerIcon ]);
+
                 });
             },
             error: function (data) {
@@ -206,25 +208,14 @@
 
     function reload_map(){
         let id_tipo_servicio= $("#id_tipo_servicio").val();
-        // alert(id_tipo_servicio);
         mainMap(getLocations({'id_tipo_servicio' : id_tipo_servicio}));
-        /*var locations = [
-            [locationData('listing-single2.html', 'Hotels', 'images/all/1.jpg', 'Luxary Hotel-Spa', "1327 Intervale Ave, Bronx, NY ", "+38099231212", "5", "27"), 40.72956781, -73.99726866, 1, markerIcon],
-            [locationData('listing-single.html', 'Food and Drink', 'images/all/1.jpg', 'Luxary Restaurant', "W 85th St, New York, NY ", "+38099231212", "4", "5"), 40.76221766, -73.96511769, 2, markerIcon],
-        ];
-        mainMap(locations);*/
-
     }
-
-
 
 
     var map = document.getElementById('map-main');
     if (typeof (map) != 'undefined' && map != null) {
         google.maps.event.addDomListener(window, 'load', mainMap(getLocations()));
     }
-
-
 
 
     function singleMap() {
@@ -254,8 +245,29 @@
             position: myLatLng,
             map: single_map,
             icon: markerIcon,
-            title: 'Our Location'
+            title: 'Our Location',
+            draggable:true,
+            animation: google.maps.Animation.DROP,
+
+
         });
+        marker.addListener("click", toggleBounce);
+
+        function toggleBounce() {
+            if (marker.getAnimation() !== null) {
+              marker.setAnimation(null);
+            } else {
+              marker.setAnimation(google.maps.Animation.BOUNCE);
+            }
+          }
+
+        google.maps.event.addListener(marker, 'dragend', function (evt) {
+            $("#txtLat").val(evt.latLng.lat().toFixed(6));
+            $("#txtLng").val(evt.latLng.lng().toFixed(6));
+
+            single_map.panTo(evt.latLng);
+        });
+
         var zoomControlDiv = document.createElement('div');
         var zoomControl = new ZoomControl(zoomControlDiv, single_map);
         function ZoomControl(controlDiv, single_map) {

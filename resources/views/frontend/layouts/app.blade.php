@@ -31,9 +31,9 @@
             @include('frontend.layouts.app-header')
 
             <div id="wrapper">
-                <div class="content">
+
                     @yield('content')
-                </div>
+
             </div>
 
 

@@ -5,7 +5,7 @@
                         <a href="index.html"><img src="images/logo.png" alt=""></a>
                     </div>
 
-                    <a href="dashboard-add-listing.html" class="add-list">Haz tu denuncia <span><i class="fa fa-plus"></i></span></a>
+                    <a href="{{ route('solicitudes.create-frontend') }}" class="add-list">Haz tu denuncia <span><i class="fa fa-plus"></i></span></a>
                     <!-- nav-button-wrap-->
                     <div class="nav-button-wrap color-bg">
                         <div class="nav-button">
