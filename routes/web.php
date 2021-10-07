@@ -20,6 +20,7 @@ Route::get('/', function () {
 Route::get('/', 'App\Http\Controllers\Frontend\WelcomeController@index')->name('welcome');
 
 //Consulta frontend
+Route::post('solicitudes/store-frontend', 'App\Http\Controllers\SolicitudController@storeFrontend')->name('solicitudes.store-frontend');
 Route::get('solicitudes/get-all-frontend', 'App\Http\Controllers\SolicitudController@getAllFrontend')->name('solicitudes.get-all-frontend');
 Route::get('solicitud/{id}/detalle', 'App\Http\Controllers\SolicitudController@showFrontend')->name('solicitudes.show-frontend');
 Route::get('solicitud/captura', 'App\Http\Controllers\SolicitudController@createFrontend')->name('solicitudes.create-frontend');

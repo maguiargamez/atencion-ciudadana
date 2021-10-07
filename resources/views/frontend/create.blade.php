@@ -1,10 +1,16 @@
 @extends('frontend.layouts.app')
 
+@section('css')
+    <link rel="stylesheet" media="screen, print" href="{{ asset('assets/css/notifications/sweetalert2/sweetalert2.bundle.css') }}">
+@endsection
+
 @section('js')
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?key="></script>
+    <script src="{{ asset('assets/js/notifications/sweetalert2/sweetalert2.bundle.js') }}"></script>
     <script src="{{ asset('assets/frontend/js/map_infobox.js') }}"></script>
     <script src="{{ asset('assets/frontend/js/markerclusterer.js') }}"></script>
     <script src="{{ asset('assets/frontend/js/maps.js') }}"></script>
+    <script src="{{ asset('js/frontend/solicitud.js') }}"></script>
 @endsection
 
 @section('script')
@@ -12,7 +18,7 @@
 
 @section('content')
 
-{!! Form::open(['method' => 'POST', 'route' => $current_route . '.store', 'class' => '', 'files' => true, 'id' =>
+{!! Form::open(['method' => 'POST', 'route' => 'solicitudes.store-frontend', 'class' => '', 'files' => true, 'id' =>
     'myform', 'name' => 'myform']) !!}
                     <!--section -->
                     <section>
@@ -59,7 +65,7 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <label>Teléfonos <i class="fa fa-phone"></i></label>
-                                                        {!! Form::text('nombre', null, ['id' => 'nombre', 'placeholder'=> '', 'class' => 'form-control']) !!}
+                                                        {!! Form::text('telefono', null, ['id' => 'telefono', 'placeholder'=> '', 'class' => 'form-control']) !!}
                                                     </div>
 
                                                     <div class="col-md-6">
@@ -168,9 +174,12 @@
                             </div>
                             <!--profile-edit-wrap end -->
                         </div>
+
+                        <button  type="button" class="btn  big-btn  color-bg flat-btn" onclick="button_enviar($('#myform'))"><i class="fa fa-angle-right"></i> Enviar</button>
                         <!--container end -->
                     </section>
                     <!-- section end -->
+
 
                     {!! Form::close() !!}
 @endsection

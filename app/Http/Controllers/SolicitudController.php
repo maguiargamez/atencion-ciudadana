@@ -61,5 +61,68 @@ class SolicitudController extends Controller
         return view('frontend.create', compact('servicios'));
     }
 
+    public function storeFrontend(\App\Http\Requests\StoreSolicitudRequest $request)
+    {
+        $validation = new ModuleValidations;
+        $status= 1; $code= 201;
+        $post = $request->all();
+        //$validation->cuentaUsuarioStore(new User, ['id'=> 0, 'id_adm_cliente'=>$post['id_adm_cliente'], 'nickname'=>$post['nickname']]);
+        if(!$validation->getStatus()){
+            try{
+                DB::beginTransaction();
+                $datos= new Solicitud;
+
+                $post['id_status']= 1;
+                $post['id_tipo_solicitud']= 1;
+                $post['id_prioridad']= 2;
+                $post['id_canal_acceso']= 3;
+                $post['codigo_rastreo']= Str::random(8);
+                $path= public_path().'/img/solicitudes';
+                $adjuntos= [];
+
+                if($request->hasFile('adj1')) {
+                    if ($request->file('adj1')->isValid()) {
+                        $file= $request->adj1;
+                        $extension= $file->extension();
+                        $fileName = Str::random(20).'_'.time().'.'.$extension;
+                        $file->move($path, $fileName);
+                        array_push($adjuntos, $fileName);
+                    }
+                }
+
+                if($request->hasFile('adj2')) {
+                    if ($request->file('adj2')->isValid()) {
+                        $file= $request->adj2;
+                        $extension= $file->extension();
+                        $fileName = Str::random(20).'_'.time().'.'.$extension;
+                        $file->move($path, $fileName);
+                        array_push($adjuntos, $fileName);
+                    }
+                }
+
+                if($request->hasFile('adj3')) {
+                    if ($request->file('adj3')->isValid()) {
+                        $file= $request->adj3;
+                        $extension= $file->extension();
+                        $fileName = Str::random(20).'_'.time().'.'.$extension;
+                        $file->move($path, $fileName);
+                        array_push($adjuntos, $fileName);
+                    }
+                }
+
+                $post['adjuntos']= json_encode($adjuntos);
+                $datos->fill($post)->save();
+                DB::commit();
+                $msg= "La información ha sido registrada"; $route_redirect= route('solicitudes.create-frontend'); $data= $datos;
+            }catch (\Exception $e) {
+                $status= 3; $code= 409; $msg= $e->getMessage(); $route_redirect= ""; $data= [];
+                DB::rollback();
+            }
+        }else{
+            $status= 3; $code= $validation->getStatusCode(); $msg= $validation->getStatusMsg(); $route_redirect= ""; $data= [];
+        }
+        return response()->json(['status'=>$status, 'code'=>$code, 'msg'=>$msg, 'route_redirect'=>$route_redirect, 'data'=>$data], $code);
+    }
+
 
 }
