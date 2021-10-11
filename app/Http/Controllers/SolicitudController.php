@@ -27,6 +27,52 @@ class SolicitudController extends Controller
         view()->share('current_route', $this->route);
     }
 
+    // ==================> Backend <==================
+
+    public function getAll(Request $request)
+    {
+        $post = $request->all();
+        $data= [];
+        if(isset($post['id_status'])){
+            if($post['id_status']!=0){
+            $data= ['id_status'=>[$post['id_status']]];
+            }
+        }
+        $result= Solicitud::buscarTodos($data)->get();
+        return $result;
+    }
+
+    public function index($id_status)
+    {
+        $status= \App\Models\Catalogos\Status::find($id_status);
+        return view('modulos.solicitudes.index', compact('status') );
+    }
+
+
+    public function show($id)
+    {
+        $datos= Solicitud::find($id);
+        return view('modulos.solicitudes.show', compact('datos') );
+    }
+
+    public function destroy($id)
+    {
+        $status= 1; $code= 201;
+        try {
+            DB::beginTransaction();
+            $datos= Solicitud::find($id);
+            $datos->delete();
+            DB::commit();
+            $msg= "El registro ha sido eliminado"; $route_redirect= route($this->route.'.index'); $data= $datos;
+        } catch (\Throwable $th) {
+            //throw $th;
+            $status= 3; $code= 409; $msg= $th->getMessage(); $route_redirect= ""; $data= [];
+        }
+        return response()->json(['status'=>$status, 'code'=>$code, 'msg'=>$msg, 'route_redirect'=>$route_redirect, 'data'=>$data], $code);
+    }
+
+
+    // ==================> Frontend <==================
     public function getAllFrontend(Request $request)
     {
         $post = $request->all();

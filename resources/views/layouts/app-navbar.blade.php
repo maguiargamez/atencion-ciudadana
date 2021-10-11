@@ -44,7 +44,9 @@
             @role('admin')
                 @include('layouts.menus.admin')
             @endrole
-
+            @role('municipio')
+                @include('layouts.menus.municipio')
+            @endrole
 
         </ul>
 

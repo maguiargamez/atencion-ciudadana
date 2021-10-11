@@ -30,7 +30,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('dashboard', 'App\Http\Controllers\DashboardController@dashboard')->name('home');
 
-    Route::group(['middleware' => ['role:admin']], function () {
+    Route::group(['middleware' => ['role:admin|municipio']], function () {
 
 
         //Módulo de usuarios
@@ -39,10 +39,12 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('cuentas-usuario/get-all', 'App\Http\Controllers\CuentasUsuarioController@getAll')->name('cuentas-usuario.get-all');
         Route::resource('cuentas-usuario', 'App\Http\Controllers\CuentasUsuarioController',['except'=>'']);
 
+
+        //Solicitudes
         Route::get('solicitudes/get-all', 'App\Http\Controllers\SolicitudController@getAll')->name('solicitudes.get-all');
-        Route::resource('solicitudes', 'App\Http\Controllers\SolicitudController',['except'=>'']);
+        Route::get('solicitudes/status/{id_status}', 'App\Http\Controllers\SolicitudController@index')->name('solicitudes.index');
 
-
+        Route::resource('solicitudes', 'App\Http\Controllers\SolicitudController',['except'=>'index']);
 
         Route::group([ 'prefix' => 'catalogos'], function () {
             Route::get('/', 'App\Http\Controllers\Catalogos\CatalogoController@index')->name('catalogos.index');
