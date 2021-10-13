@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use PDF;
 use Illuminate\Support\Facades\Hash;
-
 class WelcomeController extends Controller
 {
     /**
@@ -28,7 +27,9 @@ class WelcomeController extends Controller
     public function index()
     {
         $tipos_servicios= \App\Models\Catalogos\TipoServicio::comboActivos();
-        return view('welcome', ['tipos_servicios'=>$tipos_servicios]);
+
+        $resultados= Solicitud::buscarTodos(['isFolio'=>1])->paginate(15);
+        return view('welcome', compact('tipos_servicios', 'resultados'));
     }
 
 

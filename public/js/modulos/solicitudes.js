@@ -182,3 +182,29 @@ function clean_table() {
     dt_defaultt.destroy();
     $('#dt_default').empty();
 }
+
+function add_seguimiento(accion){
+
+    let descripcion= "Descripción del seguimiento";
+    let titulo= "Agregar segumiento";
+    if(accion==3){
+        descripcion="Motivo de cancelación";
+        titulo="Cancelar";
+    }
+    if(accion==2){
+        descripcion="Primer seguimiento:";
+        titulo="Aceptar trámite";
+    }
+    if(accion==4){
+        descripcion="Descripción de finalización:";
+        titulo="Finalizar trámite";
+    }
+
+
+
+    $("#id_accion").val(accion);
+    $("#txt-descripcion").text(descripcion);
+    $("#txt-titulo").text(titulo);
+
+    $("#modal-seguimiento").modal('show');
+}

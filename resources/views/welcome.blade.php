@@ -1,7 +1,7 @@
 @extends('frontend.layouts.app')
 
 @section('js')
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?key="></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyACINILux0NDpJKTxPZ-uwmRwGfNm0W19U"></script>
 
     <script src="{{ asset('assets/frontend/js/map_infobox.js') }}"></script>
     <script src="{{ asset('assets/frontend/js/markerclusterer.js') }}"></script>
@@ -36,6 +36,43 @@
         <!-- home-map end-->
     </div>
     <!-- section end -->
+
+        <!--section -->
+        <section>
+            <!-- container -->
+            <div class="container">
+                <!-- profile-edit-wrap -->
+                <div class="profile-edit-wrap">
+                    <div class="profile-edit-page-header">
+                        <h2>Últimas denuncias</h2>
+
+                    </div>
+
+                    <div class="col-md-12">
+                                @foreach ($resultados as $resultado)
+                                <div class="dashboard-list">
+                                    <div class="dashboard-message">
+                                        <div class="dashboard-message-text">
+                                            <h4>{{ $resultado->tipo_servicio }} - <span>{{ $resultado->created_at }}</span></h4>
+                                            <span class="booking-text"><b>Estatus: </b>{{ $resultado->status }}</span>
+                                            <p>{{ substr($resultado->descripcion_reporte, 0, 500).'...' }}</p>
+                                            <a href="{{ route('solicitudes.show-frontend', $resultado->id) }}" class="btn  circle-btn color-bg flat-btn">Leer más...</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endforeach
+
+
+
+                    </div>
+
+                    <div class="col-md-12">
+                        <a href="{{ route('solicitudes.index-frontend') }}" class="btn  big-btn  color-bg flat-btn">Ver más...</a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
 
 @endsection
 

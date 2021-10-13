@@ -5,7 +5,7 @@
 @endsection
 
 @section('js')
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?key="></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyACINILux0NDpJKTxPZ-uwmRwGfNm0W19U"></script>
     <script src="{{ asset('assets/js/notifications/sweetalert2/sweetalert2.bundle.js') }}"></script>
     <script src="{{ asset('assets/frontend/js/map_infobox.js') }}"></script>
     <script src="{{ asset('assets/frontend/js/markerclusterer.js') }}"></script>

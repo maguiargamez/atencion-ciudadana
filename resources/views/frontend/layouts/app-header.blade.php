@@ -21,7 +21,8 @@
                                     <a href="{{ route('welcome') }}" class="act-link">Inicio</a>
                                 </li>
                                 <li>
-                                    <a href="#">Denuncias
+                                    <a href="{{ route('solicitudes.index-frontend') }}" class="">Denuncias</a>
+
                                 </li>
 
 

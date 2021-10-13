@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Solicitud;
+use App\Models\SolicitudSeguimiento;
 use App\Http\Classes\ModuleValidations;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -48,11 +49,49 @@ class SolicitudController extends Controller
         return view('modulos.solicitudes.index', compact('status') );
     }
 
-
     public function show($id)
     {
         $datos= Solicitud::find($id);
         return view('modulos.solicitudes.show', compact('datos') );
+    }
+
+    public function addSeguimiento(\App\Http\Requests\StoreSeguimientoRequest $request)
+    {
+        $validation = new ModuleValidations;
+        $status= 1; $code= 201;
+        $post = $request->all();
+
+        $id_status= 2;
+        //$validation->cuentaUsuarioStore(new User, ['id'=> 0, 'id_adm_cliente'=>$post['id_adm_cliente'], 'nickname'=>$post['nickname']]);
+        if(!$validation->getStatus()){
+            try{
+                DB::beginTransaction();
+                if($post["id_accion"]!=0){
+                    $datos= Solicitud::find($post['id_solicitud']);
+                    $post['id_status']= $post["id_accion"];
+                    $datos->fill($post)->save();
+                    $id_status= $datos->id_status;
+
+                    $seguimiento= new SolicitudSeguimiento;
+                    $post['fecha']= date('Y-m-d');
+                    $seguimiento->fill($post)->save();
+                }else{
+                    $seguimiento= new SolicitudSeguimiento;
+                    $post['fecha']= date('Y-m-d');
+                    $seguimiento->fill($post)->save();
+                    $datos= $seguimiento;
+                }
+                DB::commit();
+
+                $msg= "La información ha sido registrada"; $route_redirect= route($this->route.'.index', $id_status); $data= $datos;
+            }catch (\Exception $e) {
+                $status= 3; $code= 409; $msg= $e->getMessage(); $route_redirect= ""; $data= [];
+                DB::rollback();
+            }
+        }else{
+            $status= 3; $code= $validation->getStatusCode(); $msg= $validation->getStatusMsg(); $route_redirect= ""; $data= [];
+        }
+        return response()->json(['status'=>$status, 'code'=>$code, 'msg'=>$msg, 'route_redirect'=>$route_redirect, 'data'=>$data], $code);
     }
 
     public function destroy($id)
@@ -71,8 +110,21 @@ class SolicitudController extends Controller
         return response()->json(['status'=>$status, 'code'=>$code, 'msg'=>$msg, 'route_redirect'=>$route_redirect, 'data'=>$data], $code);
     }
 
-
     // ==================> Frontend <==================
+
+    public function indexFrontend(Request $request)
+    {
+        $data= ['isFolio'=>1];
+        if(isset($post['id_tipo_servicio'])){
+            if($post['id_tipo_servicio']!=0){
+            $data= ['isFolio'=>1, 'id_tipo_servicio'=>$post['id_tipo_servicio']];
+            }
+        }
+        $resultados= Solicitud::buscarTodos($data)->paginate(15);
+        return view('frontend.index', compact('resultados'));
+    }
+
+
     public function getAllFrontend(Request $request)
     {
         $post = $request->all();

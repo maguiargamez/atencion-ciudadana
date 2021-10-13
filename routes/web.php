@@ -24,6 +24,7 @@ Route::post('solicitudes/store-frontend', 'App\Http\Controllers\SolicitudControl
 Route::get('solicitudes/get-all-frontend', 'App\Http\Controllers\SolicitudController@getAllFrontend')->name('solicitudes.get-all-frontend');
 Route::get('solicitud/{id}/detalle', 'App\Http\Controllers\SolicitudController@showFrontend')->name('solicitudes.show-frontend');
 Route::get('solicitud/captura', 'App\Http\Controllers\SolicitudController@createFrontend')->name('solicitudes.create-frontend');
+Route::get('solicitud/listado', 'App\Http\Controllers\SolicitudController@indexFrontend')->name('solicitudes.index-frontend');
 
 
 Route::group(['middleware' => ['auth']], function () {
@@ -43,7 +44,10 @@ Route::group(['middleware' => ['auth']], function () {
         //Solicitudes
         Route::get('solicitudes/get-all', 'App\Http\Controllers\SolicitudController@getAll')->name('solicitudes.get-all');
         Route::get('solicitudes/status/{id_status}', 'App\Http\Controllers\SolicitudController@index')->name('solicitudes.index');
+        Route::get('solicitudes/cancelar/{id}', 'App\Http\Controllers\SolicitudController@cancelar')->name('solicitudes.cancelar');
 
+
+        Route::post('solicitudes/seguimiento', 'App\Http\Controllers\SolicitudController@addSeguimiento')->name('solicitudes.add-seguimiento');
         Route::resource('solicitudes', 'App\Http\Controllers\SolicitudController',['except'=>'index']);
 
         Route::group([ 'prefix' => 'catalogos'], function () {

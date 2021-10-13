@@ -29,7 +29,8 @@ class Solicitud extends Model
             't_solicitudes.longitud',
             'ts.nombre as tipo_servicio',
             't_solicitudes.adjuntos',
-            'stat.nombre as status'
+            'stat.nombre as status',
+            't_solicitudes.created_at',
         );
 
         $query= $query->join('c_tipos_servicios as ts', 'ts.id', '=', 't_solicitudes.id_tipo_servicio');
